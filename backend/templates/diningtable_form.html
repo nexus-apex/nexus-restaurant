@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit{% else %}New{% endif %} DiningTable | NexusRestaurant{% endblock %}
+{% block page_title %}{% if editing %}Edit DiningTable{% else %}New DiningTable{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:750px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group">
+        <label>Table Number</label>
+        <input type="text" name="table_number" value="{{ record.table_number|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Capacity</label>
+        <input type="number" name="capacity" value="{{ record.capacity|default:'0' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Section</label>
+        <select name="section">
+          <option value="indoor" {% if record.section == 'indoor' %}selected{% endif %}>Indoor</option>
+          <option value="outdoor" {% if record.section == 'outdoor' %}selected{% endif %}>Outdoor</option>
+          <option value="private" {% if record.section == 'private' %}selected{% endif %}>Private</option>
+          <option value="bar" {% if record.section == 'bar' %}selected{% endif %}>Bar</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="available" {% if record.status == 'available' %}selected{% endif %}>Available</option>
+          <option value="occupied" {% if record.status == 'occupied' %}selected{% endif %}>Occupied</option>
+          <option value="reserved" {% if record.status == 'reserved' %}selected{% endif %}>Reserved</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Reserved Name</label>
+        <input type="text" name="reserved_name" value="{{ record.reserved_name|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Reserved Time</label>
+        <input type="date" name="reserved_time" value="{{ record.reserved_time|date:'Y-m-d'|default:'' }}">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <button type="submit" class="btn btn-primary">{% if editing %}Update{% else %}Create{% endif %} DiningTable</button>
+      <a href="/diningtables/" class="btn" style="background:var(--border);color:var(--text)">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
