@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit{% else %}New{% endif %} TableOrder | NexusRestaurant{% endblock %}
+{% block page_title %}{% if editing %}Edit TableOrder{% else %}New TableOrder{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:750px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group">
+        <label>Table Number</label>
+        <input type="text" name="table_number" value="{{ record.table_number|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Server</label>
+        <input type="text" name="server" value="{{ record.server|default:'' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Items Count</label>
+        <input type="number" name="items_count" value="{{ record.items_count|default:'0' }}">
+      </div>
+      <div class="form-group">
+        <label>Subtotal</label>
+        <input type="number" step="0.01" name="subtotal" value="{{ record.subtotal|default:'0' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Tax</label>
+        <input type="number" step="0.01" name="tax" value="{{ record.tax|default:'0' }}">
+      </div>
+      <div class="form-group">
+        <label>Total</label>
+        <input type="number" step="0.01" name="total" value="{{ record.total|default:'0' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="open" {% if record.status == 'open' %}selected{% endif %}>Open</option>
+          <option value="preparing" {% if record.status == 'preparing' %}selected{% endif %}>Preparing</option>
+          <option value="served" {% if record.status == 'served' %}selected{% endif %}>Served</option>
+          <option value="billed" {% if record.status == 'billed' %}selected{% endif %}>Billed</option>
+          <option value="closed" {% if record.status == 'closed' %}selected{% endif %}>Closed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Order Time</label>
+        <input type="date" name="order_time" value="{{ record.order_time|date:'Y-m-d'|default:'' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Payment</label>
+        <select name="payment">
+          <option value="cash" {% if record.payment == 'cash' %}selected{% endif %}>Cash</option>
+          <option value="card" {% if record.payment == 'card' %}selected{% endif %}>Card</option>
+          <option value="upi" {% if record.payment == 'upi' %}selected{% endif %}>UPI</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <button type="submit" class="btn btn-primary">{% if editing %}Update{% else %}Create{% endif %} TableOrder</button>
+      <a href="/tableorders/" class="btn" style="background:var(--border);color:var(--text)">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
